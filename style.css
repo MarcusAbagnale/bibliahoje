@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@1,100&display=swap');
+
+.pswp , #regionFooter, .header, .chrome, .shareInfoContainer {
+    display: none;
+}
+
+
+
+
+
+.cont {
+    width: 93%;
+    margin-left: -25px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: justify;
+}
+.body {
+ font-family: 'Roboto', sans-serif;
+ font-size: 48px;
+ background: #000;
+ color: #d1cfcf;
+ font-weight: 600;
+ font-size: 18px;
+}
+.bodyw {
+
+ font-family: 'Roboto', sans-serif;
+ font-size: 48px;
+ background: #d1cbcb;
+ color: #262525;
+ font-weight: 600;
+ font-size: 18px;
+}
+
+i {
+    color: #fff;
+}
+
+select {
+    width: 100%;
+}
+.none {
+    display: none;
+}
+#studyWrapper, #videoWrapperContainer, #documentCitationInformation , h1, header, .header, .chrome, shareFormWrapper{
+    display: none;
+}
+#livros {
+    margin: 2%;
+    float: left;
+    width: 30%
+}
+a {
+    display: none;
+}
+li {
+  list-style-type: none;
+  font-size: 14px;
+}
+
+.red {
+    color: red;
+}
+
+.lightSpeedOut {
+  -webkit-animation-name: lightSpeedOut;
+  animation-name: lightSpeedOut;
+  -webkit-animation-timing-function: ease-in;
+  animation-timing-function: ease-in;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+@-webkit-keyframes lightSpeedOut {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+      transform: translate3d(100%, 0, 0) skewX(30deg);
+      opacity: 0;
+  }
+}
+@keyframes lightSpeedOut {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+      transform: translate3d(100%, 0, 0) skewX(30deg);
+      opacity: 0;
+  }
+} 
+
+.slideOutUp {
+  -webkit-animation-name: slideOutUp;
+  animation-name: slideOutUp;
+  -webkit-animation-duration: 30s;
+  animation-duration: 600s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+@-webkit-keyframes slideOutUp {
+  0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+  }
+  100% {
+      visibility: hidden;
+      -webkit-transform: translateY(-100%);
+      transform: translateY(-100%);
+  }
+}
+@keyframes slideOutUp {
+  0% {
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+  }
+  100% {
+      visibility: hidden;
+      -webkit-transform: translateY(-100%);
+      transform: translateY(-100%);
+  }
+} 
+
+header {
+
+    background: #000;
+    width: 100%;
+    padding: 20px;
+}
+.tools {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: #000;
+    z-index: 100;
+    display: flex;
+}
+.camposdigitaveis {
+    width: 100%;
+}
+.hebraicas {
+    width: 100%;
+}
+input {
+    background: #4a6378;
+    text-align: right;
+    color: #101214;
+    border: none;
+    width: 43px;
+    border-radius: 3px;
+    margin-left: 3px;
+}
+hr {
+    border: #22191957 solid 1px;
+}
+button {
+    padding: 12px;
+    background: #343434;
+    border-radius: 3px;
+    font-family: fangsong;
+    color: #ffffff;
+    font-weight: 600;
+    margin: 1px;
+}
+.ponto_fixo{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:200px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+
+.ponto_fixo2{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:240px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+.ponto_fixo3{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:280px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+
+.ponto_fixo4{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:320px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+
+.ponto_fixo5{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:360px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+
+.ponto_fixo6{
+  /*você pode alterar largura usando width*/
+  padding:5px;
+  background:#1b1b37;
+  position:fixed;
+  top:400px;/*altura da classe*/
+  right: 0;
+  border-radius: 6px;
+  width: 25px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 95%;
+    display: flex;
+}
+
+#caixa_livros, #caixa_capitulo, #calendario {
+    border: solid 1px #403a3a;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+@media screen and (max-width: 600px) {
+  .scalableui {
+    column-count: 1;
+  }
+}
+
+/*
+.fadeOutLeft {
+  -webkit-animation-name: fadeOutLeft;
+  animation-name: fadeOutLeft;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  }
+  @-webkit-keyframes fadeOutLeft {
+  0% {
+  opacity: 1;
+  }
+  100% {
+  opacity: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+   }
+  }
+  @keyframes fadeOutLeft {
+  0% {
+  opacity: 1;
+  }
+  100% {
+  opacity: 0;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+   display: none;
+  }
+  }*/
+×
