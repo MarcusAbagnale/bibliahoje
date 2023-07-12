@@ -22,6 +22,7 @@
         font-family: 'Pacifico', cursive;
         font-size: 18px;
         color: #262525;
+        width: 93%;
     }
 
     .cont {
