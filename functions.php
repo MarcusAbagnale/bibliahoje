@@ -4,10 +4,10 @@ $mysqli = null;
 
 
 function conectarBancoDeDados() {
-    $hostRemoto = "localhost";
-    $usuarioRemoto = "u815655858_root";
-    $senhaRemoto = "Dimidrica09'@";
-    $bancoDeDadosRemoto = "u815655858_bdsis";
+    $hostRemoto = "sql10.freemysqlhosting.net";
+    $usuarioRemoto = "sql10632295";
+    $senhaRemoto = "zaL56tXSLj";
+    $bancoDeDadosRemoto = "sql10632295";
 
     $hostLocal = "localhost";
     $usuarioLocal = "root";
@@ -18,9 +18,9 @@ function conectarBancoDeDados() {
     //error_reporting(0);
 
     // Tentar conexão com o banco de dados remoto
-    //$mysqli = @new mysqli($hostRemoto, $usuarioRemoto, $senhaRemoto, $bancoDeDadosRemoto);
+    $mysqli = @new mysqli($hostRemoto, $usuarioRemoto, $senhaRemoto, $bancoDeDadosRemoto);
 
-   /* if ($mysqli->connect_errno) {
+    if ($mysqli->connect_errno) {
 
         // Tentar conexão com o banco de dados local
         
@@ -28,8 +28,8 @@ function conectarBancoDeDados() {
         if ($mysqli->connect_errno) {
             return false;
         }
-    }*/
-
+    }
+    
 $mysqli = @new mysqli($hostLocal, $usuarioLocal, $senhaLocal, $bancoDeDadosLocal);
     // Restaurar configuração de exibição de erros
     //error_reporting(E_ALL);
