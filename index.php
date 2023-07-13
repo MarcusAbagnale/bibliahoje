@@ -1,70 +1,4 @@
-<?php
 
-$mysqli = null;
-
-
-function conectarBancoDeDados() {
-    $hostRemoto = "focoformaturas.com";
-    $usuarioRemoto = "u815655858_dbbiblia";
-    $senhaRemoto = "Dimidrica09'@";
-    $bancoDeDadosRemoto = "u815655858_dbbiblia";
-
-    $hostLocal = "localhost";
-    $usuarioLocal = "root";
-    $senhaLocal = "";
-    $bancoDeDadosLocal = "dbbiblia";
-
-    // Desativar exibição de erros
-    //error_reporting(0);
-
-    // Tentar conexão com o banco de dados remoto
-    $mysqli = @new mysqli($hostRemoto, $usuarioRemoto, $senhaRemoto, $bancoDeDadosRemoto);
-
-    if ($mysqli->connect_errno) {
-
-        // Tentar conexão com o banco de dados local
-        
-
-        if ($mysqli->connect_errno) {
-            return false;
-        }
-    }
-    
-$mysqli = @new mysqli($hostLocal, $usuarioLocal, $senhaLocal, $bancoDeDadosLocal);
-    // Restaurar configuração de exibição de erros
-    //error_reporting(E_ALL);
-
-    return $mysqli;
-}
-
-
-
-function executarConsulta($sql, $campo) {
-    // Conectar ao banco de dados
-    $mysqli = conectarBancoDeDados();
-
-    if (!$mysqli) {
-        return false;
-    }
-
-    $result = $mysqli->query($sql);
-
-    if (!$result) {
-        echo "Erro na consulta: " . $mysqli->error;
-        $mysqli->close();
-        return false;
-    }
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $valor = $row[$campo];
-        $result->free_result();
-        return $valor;
-    }
-
-    return false;
-}
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,14 +12,13 @@ function executarConsulta($sql, $campo) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@1,100&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 </head>
 
 <style type="text/css">
     body {
         background-color: #f2f8b2f2;
-        font-family: 'Pacifico', cursive;
+        font-family: 'Pacifico';
         font-size: 18px;
         color: #262525;
         width: 93%;
@@ -133,6 +66,8 @@ function executarConsulta($sql, $campo) {
 <?php 
 //ini_set('display_errors',0);
 
+include 'functions.php';
+
 date_default_timezone_set('America/Manaus');
 
 if (isset($_POST['capitulo'])) {
@@ -141,13 +76,9 @@ if (isset($_POST['capitulo'])) {
 
 
 
-    $mysqli = conectarBancoDeDados();
-
-//echo executarConsulta("SELECT COUNT(*) AS total FROM resultados", 'total').'<br>';
-
     $sql = "SELECT
     CONCAT ((select livro from livros_biblicos WHERE id = reg.livro),' Capítulos ' ,MIN(capitulo),' a ' , MAX(capitulo),'.') leitura  FROM (
-        SELECT * FROM PRG_ANUAL WHERE DIA = ".(date('d')*1)." AND MES = ".(date('m')*1)." ORDER BY capitulo) AS reg 
+        SELECT * FROM prg_anual WHERE DIA = ".(date('d')*1)." AND MES = ".(date('m')*1)." ORDER BY capitulo) AS reg 
     GROUP BY livro";
 
 
@@ -156,23 +87,25 @@ if (isset($_POST['capitulo'])) {
 
     $conteudo ='';
     if (isset($_POST['data'])) {
-        $sql = "SELECT * FROM  PRG_ANUAL 
+        $sql = "SELECT * FROM  prg_anual 
         WHERE DIA = DAY('".$_POST['data']."') AND MES = MONTH('".$_POST['data']."') ORDER BY CAPITULO";
     } else {
-        $sql = "SELECT * FROM  PRG_ANUAL 
-        WHERE DIA = ".(date('d')*1)." AND MES = ".(date('m')*1)." ORDER BY CAPITULO";
+        $sql = "SELECT * FROM  prg_anual 
+        WHERE DIA = 14 AND MES = ".(date('m')*1)." ORDER BY CAPITULO";
     }
 
-    if ($result = $mysqli -> query($sql)) {
+//(date('d')*1)
+
+    if ($result = executarConsultaMultipla($sql)) {
 
         foreach ($result as $key => $value) {
-         $conteudo .= getConteudo($value["links"]);
-     }
+           $conteudo .= getConteudo($value["links"]);
+       }
 
-     $result -> free_result();
- }
+       //$result -> free_result();
+   }
 
- $mysqli -> close();
+
 
 } 
 
@@ -185,7 +118,7 @@ if (isset($_POST['capitulo'])) {
 
         <fieldset>
 
-           <label class="campo">Capítulo:
+         <label class="campo">Capítulo:
             <?php
             $livro = (isset($_POST['livro'])) ? $_POST['livro'] : 'gen' ; 
             $capitulo = (isset($_POST['capitulo'])) ? $_POST['capitulo'] : 1 ;  
@@ -478,15 +411,15 @@ if (isset($_POST['capitulo'])) {
 
 
         for ($j=1; $j < lim; $j++) { 
-           $('#caixa_capitulo').append('<button onclick="setCapitulo(\''+$j+'\')" value="'+$j+'">'+$j+'</button>');
-       }
+         $('#caixa_capitulo').append('<button onclick="setCapitulo(\''+$j+'\')" value="'+$j+'">'+$j+'</button>');
+     }
 
 
 
-   }
+ }
 
 
-   function setCapitulo (i) {
+ function setCapitulo (i) {
     $('#capitulo').val(i)
     $('#form').submit()
 }
@@ -627,21 +560,21 @@ function slide () {
     $('#slideOff').removeClass(['none']);
 }
 function livros() {
-   $('#livros').addClass(['none'])
+ $('#livros').addClass(['none'])
 
 
 }
 
 function showVersiculos(argument) {
-   $('a').css('display','block')
-   $('#vOn').addClass(['none']);
-   $('#vOff').removeClass(['none']);
+ $('a').css('display','block')
+ $('#vOn').addClass(['none']);
+ $('#vOff').removeClass(['none']);
 }
 
 function hideVersiculos(argument) {
-   $('a').css('display','none')
-   $('#vOn').removeClass(['none']);
-   $('#vOff').addClass(['none']);
+ $('a').css('display','none')
+ $('#vOn').removeClass(['none']);
+ $('#vOff').addClass(['none']);
 }
 
 function showCalendario(argument) {
