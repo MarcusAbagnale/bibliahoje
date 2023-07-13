@@ -64,3 +64,4 @@ function executarConsulta($sql, $campo) {
 
     return false;
 }
+?>

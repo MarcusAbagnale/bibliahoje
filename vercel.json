@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api": {
+      "handler": "api/index.php"
+    }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/index.php" },
+    { "src": "/(.*)", "dest": "/index.php" }
+  ]
+}
