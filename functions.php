@@ -4,10 +4,10 @@ $mysqli = null;
 
 
 function conectarBancoDeDados() {
-    $hostRemoto = "sql10.freemysqlhosting.net";
-    $usuarioRemoto = "sql10632295";
-    $senhaRemoto = "zaL56tXSLj";
-    $bancoDeDadosRemoto = "sql10632295";
+    $hostRemoto = "focoformaturas.com";
+    $usuarioRemoto = "u815655858_dbbiblia";
+    $senhaRemoto = "Dimidrica09'@";
+    $bancoDeDadosRemoto = "u815655858_dbbiblia";
 
     $hostLocal = "localhost";
     $usuarioLocal = "root";
