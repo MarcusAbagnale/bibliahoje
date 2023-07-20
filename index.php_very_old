@@ -13,102 +13,40 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@1,100&display=swap" rel="stylesheet">
 
+
 </head>
 
-<style type="text/css">
-    body {
-        background-color: #f2f8b2f2;
-        font-family: 'Pacifico';
-        font-size: 18px;
-        color: #262525;
-        width: 93%;
-    }
-
-    .cont {
-      width: 100%;
-      transition: width 0.3s;
-  }
-
-  .cont.show {
-      width: 93%;
-  }
-
-  .floating-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background-color: #1b1b37;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      padding: 0;
-      font-size: 24px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-      cursor: pointer;
-      z-index: 9999;
-  }
-
-  .floating-button:hover {
-      background-color: #242449cf;
-  }
-</style>
-
-<div class="calendario none">
-  <form  method="POST" >
-    <label>Data:<input type="date" name="data" style="width: 109px; padding: 3px;"></label>
-    <input type="submit" value="Pesquisar" style="width: 109px; padding: 3px;">
-</form>
-</div>
 
 <?php 
-//ini_set('display_errors',0);
-
-include 'functions.php';
-
-date_default_timezone_set('America/Manaus');
+ini_set('display_errors',0);
 
 if (isset($_POST['capitulo'])) {
-  $conteudo ='';
-} else {
-
-
-
-    $sql = "SELECT
-    CONCAT ((select livro from livros_biblicos WHERE id = reg.livro),' Capítulos ' ,MIN(capitulo),' a ' , MAX(capitulo),'.') leitura  FROM (
-        SELECT * FROM prg_anual WHERE DIA = ".(date('d')*1)." AND MES = ".(date('m')*1)." ORDER BY capitulo) AS reg 
-    GROUP BY livro";
-
-
-    echo '<div><p style="text-aling: center; width: 100%">'.executarConsulta($sql, 'leitura').'</p></div>';
-
-
     $conteudo ='';
-    if (isset($_POST['data'])) {
-        $sql = "SELECT * FROM  prg_anual 
-        WHERE DIA = DAY('".$_POST['data']."') AND MES = MONTH('".$_POST['data']."') ORDER BY CAPITULO";
-    } else {
-        $sql = "SELECT * FROM  prg_anual 
-        WHERE DIA = 14 AND MES = ".(date('m')*1)." ORDER BY CAPITULO";
-    }
+} else {
+    
+$mysqli = new mysqli("localhost","root","","teste");
 
-//(date('d')*1)
+// Check connection
+if ($mysqli -> connect_errno) {
+  //echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+  $mysqli = new mysqli("localhost","id19689874_marcusabagnale","j<ABO7M/>(J~?lB7","id19689874_dbbiblia");
+  //exit();
+}
 
-    if ($result = executarConsultaMultipla($sql)) {
+// Perform query
+if ($result = $mysqli -> query("SELECT * FROM  PRG_ANUAL 
+    WHERE DIA = DAY(CURDATE()) AND MES = MONTH(CURDATE())")) {
 
-        foreach ($result as $key => $value) {
-           $conteudo .= getConteudo($value["links"]);
-       }
-
-       //$result -> free_result();
+    foreach ($result as $key => $value) {
+       $conteudo = getConteudo($value["links"]);
    }
+  // Free result set
+   $result -> free_result();
+}
 
-
+$mysqli -> close();
 
 } 
-
 
 ?>
 
@@ -118,7 +56,7 @@ if (isset($_POST['capitulo'])) {
 
         <fieldset>
 
-         <label class="campo">Capítulo:
+           <label class="campo">Capítulo:
             <?php
             $livro = (isset($_POST['livro'])) ? $_POST['livro'] : 'gen' ; 
             $capitulo = (isset($_POST['capitulo'])) ? $_POST['capitulo'] : 1 ;  
@@ -136,35 +74,20 @@ if (isset($_POST['capitulo'])) {
 </div>
 
 
-<body>
+<body style="width: 90%;">
+    <div class="ponto_fixo">
+      <i onclick="showbooks()">&#128270;</i>          
+  </div>
 
-    <div id="pontos" style="display: none;">
-      <div class="ponto_fixo">
-        <i onclick="showbooks()">&#128270;</i>          
-    </div>
+  <div class="ponto_fixo2">
+    <i id="slideOn" onclick="slide()">&#127902;</i>
+    <i id="slideOff" class="none" onclick="stop()">&#127902;</i>
+</div>
 
-    <div class="ponto_fixo2">
-        <i id="slideOn" onclick="slide()">&#127902;</i>
-        <i id="slideOff" class="none" onclick="stop()">&#127902;</i>
-    </div>
-
-    <div class="ponto_fixo3">
-        <i id="vOn" onclick="showVersiculos()">&#128279;</i>          
-        <i id="vOff" class="none" onclick="hideVersiculos()">&#128279;</i>          
-    </div>
-
-    <div class="ponto_fixo4">
-        <i id="cOn" onclick="showCalendario()">&#128467;</i>          
-        <i id="cOff" class="none" onclick="hideCalendario()">&#128467;</i>          
-    </div>
-
-    <div class="ponto_fixo5">
-        <i id="mOn" class="none" onclick="makeWhite()">W</i>          
-        <i id="mOff"  onclick="makeBlack()">B</i>          
-    </div>
-
-</div>    
-
+<div class="ponto_fixo3">
+  <i id="vOn" onclick="showVersiculos()">&#128279;</i>          
+  <i id="vOff" class="none" onclick="hideVersiculos()">&#128279;</i>          
+</div>
 
 <div style="width: 90%; margin-top: 50px;" id="caixa_livros" class="none">
 
@@ -411,15 +334,15 @@ if (isset($_POST['capitulo'])) {
 
 
         for ($j=1; $j < lim; $j++) { 
-         $('#caixa_capitulo').append('<button onclick="setCapitulo(\''+$j+'\')" value="'+$j+'">'+$j+'</button>');
-     }
+           $('#caixa_capitulo').append('<button onclick="setCapitulo(\''+$j+'\')" value="'+$j+'">'+$j+'</button>');
+       }
 
 
 
- }
+   }
 
 
- function setCapitulo (i) {
+   function setCapitulo (i) {
     $('#capitulo').val(i)
     $('#form').submit()
 }
@@ -493,9 +416,25 @@ function getConteudo ($url)
 <br>
 <br>
 
+<footer>
+    <?php 
+    echo '
 
-
-<button class="floating-button">+</button>
+    <div style="width:100%; display: flex;  botton: 0">
+    <form method="POST">
+    <input type="hidden" name="livro" value="'.$livro.'"></label>   
+    <input type="hidden" name="capitulo" value="'.($capitulo-1).'"></label>    
+    <button>←</button>
+    <form></div>';
+    echo '
+    <div style="right: 6px;  position: fixed;">
+    <form method="POST">
+    <input type="hidden" name="livro" value="'.$livro.'"></label>   
+    <input type="hidden" name="capitulo" value="'.($capitulo+1).'"></label>    
+    <button>→</button>
+    <form></div>';
+    ?>
+</footer>
 </body>
 
 
@@ -504,138 +443,72 @@ function getConteudo ($url)
 
 <script type="text/javascript">
 
+    $('#btnDesabilitar').addClass(['none']);
 
-  /*$('#btnDesabilitar').addClass(['none']);*/
+    function showbooks() {
+        $('#caixa').removeClass(['none'])
+        $('#conteudo').addClass(['none'])
+        $( "#detalhe" ).removeAttr('open')
+        /*$('#livros').removeAttr(['none'])*/
+        $('#caixa_livros').removeClass(['none'])
+    }
 
-  function showbooks() {
+    function slideup() {
+        console.log('foi clicado');
+        $('#conteudo').addClass('slideOutUp');
+        $('#btnDesabilitar').removeClass(['none']);
+        $('#btnHabilitar').addClass(['none']);
 
-    $('#caixa').removeClass(['none'])
-    $('#conteudo').addClass(['none'])
-    $( "#detalhe" ).removeAttr('open')
-    $('#livros').removeAttr(['none'])
-    $('#caixa_livros').removeClass(['none'])
-}
+    }
+    function stop() {
+        $('#conteudo').removeClass('slideOutUp');
+        $('#slideOff').addClass(['none']);
+        $('#slideOn').removeClass(['none']);
+        $('#conteudo')
+        .css("-webkit-animation-name", "")
+        .css("animation-name", "")
+        .css("-webkit-animation-duration", "0s")
+        .css("animation-duration", "0s")
+        .css("-webkit-animation-fill-mode", "")
+        .css("animation-fill-mode", "")
+        .css("@-webkit-keyframes","") 
+        console.log('parar')
+    }
 
-function showbooks() {
-    console.log('foi clicado');
-}
-
-function slideup() {
-    console.log('foi clicado');
-    $('#conteudo').addClass('slideOutUp');
-    $('#btnDesabilitar').removeClass(['none']);
-    $('#btnHabilitar').addClass(['none']);
-
-}
-function stop() {
-    $('#conteudo').removeClass('slideOutUp');
-    /*$('#slideOff').addClass(['none']);*/
-    $('#slideOn').removeClass(['none']);
-    $('#conteudo')
-    .css("-webkit-animation-name", "")
-    .css("animation-name", "")
-    .css("-webkit-animation-duration", "0s")
-    .css("animation-duration", "0s")
-    .css("-webkit-animation-fill-mode", "")
-    .css("animation-fill-mode", "")
-    .css("@-webkit-keyframes","") 
-    console.log('parar')
-}
-
-function hide() {
-    $('#caixa').addClass(['none'])
-    /*$('#conteudo').removeClass(['none'])*/
-} 
-function slide () {   
-    time = ($('#len').val() /300)
-    $('#conteudo')
-    .css("-webkit-animation-name", "slideOutUp")
-    .css("animation-name", "slideOutUp")
-    .css("-webkit-animation-duration", time+"s")
-    .css("animation-duration", time+"s")
-    .css("-webkit-animation-fill-mode", "both")
-    .css("animation-fill-mode", "both")
-    .css("@-webkit-keyframes","slideOutUp") 
-    $('#slideOn').addClass(['none']);
-    $('#slideOff').removeClass(['none']);
-}
-function livros() {
- $('#livros').addClass(['none'])
+    function hide() {
+        $('#caixa').addClass(['none'])
+            /*$('#conteudo').removeClass(['none'])*/
+    } 
+    function slide () {   
+        time = ($('#len').val() /180)
+        $('#conteudo')
+        .css("-webkit-animation-name", "slideOutUp")
+        .css("animation-name", "slideOutUp")
+        .css("-webkit-animation-duration", time+"s")
+        .css("animation-duration", time+"s")
+        .css("-webkit-animation-fill-mode", "both")
+        .css("animation-fill-mode", "both")
+        .css("@-webkit-keyframes","slideOutUp") 
+        $('#slideOn').addClass(['none']);
+        $('#slideOff').removeClass(['none']);
+    }
+    function livros() {
+     $('#livros').addClass(['none'])
 
 
-}
+ }
 
-function showVersiculos(argument) {
- $('a').css('display','block')
- $('#vOn').addClass(['none']);
- $('#vOff').removeClass(['none']);
-}
+ function showVersiculos(argument) {
+     $('a').css('display','block')
+     $('#vOn').addClass(['none']);
+     $('#vOff').removeClass(['none']);
+ }
 
-function hideVersiculos(argument) {
- $('a').css('display','none')
- $('#vOn').removeClass(['none']);
- $('#vOff').addClass(['none']);
-}
-
-function showCalendario(argument) {
-  window.scrollTo(0, 0);
-  $('.calendario').removeClass(['none']);
-  $('#cOn').addClass(['none']);
-  $('#cOff').removeClass(['none']);
-}
-
-function hideCalendario(argument) {
-  $('.calendario').addClass(['none']);
-  $('#cOn').removeClass(['none']);
-  $('#cOff').addClass(['none']);
-}
-
-
-function makeWhite(argument) {
-  $('body').removeClass(['body']);
-  $('body').addClass(['bodyw']);
-  $('#mOn').addClass(['none']);
-  $('#mOff').removeClass(['none']);
-}
-
-function makeBlack(argument) {
-  $('body').removeClass(['bodyw']);
-  $('body').addClass(['body']);
-  $('#mOn').removeClass(['none']);
-  $('#mOff').addClass(['none']);
-}
-
-function makeWhite(argument) {
-  $('body').removeClass(['body']);
-  $('body').addClass(['bodyw']);
-  $('#mOn').addClass(['none']);
-  $('#mOff').removeClass(['none']);
-}
-
-function makeLeft(argument) {
-    alert('alinhando a esquerda')
-    $('cont').removeAttr('text-align');
-    $('#mOn').removeClass(['none']);
-    $('#mOff').addClass(['none']);
-}
-
-function makeJustify(argument) {
-  $('cont').addAttr('text-align', 'justify');
-  $('#aOn').removeClass(['none']);
-  $('#aOff').addClass(['none']);
-}
-
-$(document).ready(function() {
-  $(".floating-button").click(function() {
-    $("#pontos").toggle();
-    $("#.cont").toggleClass("show");
-});
-});
-
-
-$(function() {
-  console.clear();
-});
+ function hideVersiculos(argument) {
+     $('a').css('display','none')
+     $('#vOn').removeClass(['none']);
+     $('#vOff').addClass(['none']);
+ }
 </script>
 
 

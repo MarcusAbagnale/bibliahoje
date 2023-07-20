@@ -2,22 +2,46 @@
 
 $mysqli = null;
 
-function conectarBancoDeDados() {
-    $hostRemoto = "149.100.151.103";
-    $usuarioRemoto = "u815655858_root";
-    $senhaRemoto = "Dimidrica09'@";
-    $bancoDeDadosRemoto = "u815655858_bdsis";
 
+function conectarBancoDeDados() {
+    $hostRemoto = "localhost";
+    $usuarioRemoto = "id19689874_marcusabagnale";
+    $senhaRemoto = "j<ABO7M/>(J~?lB7";
+    $bancoDeDadosRemoto = "id19689874_dbbiblia";
+
+    //mysqli("localhost","id19689874_marcusabagnale","j<ABO7M/>(J~?lB7","id19689874_dbbiblia");
+
+    $hostLocal = "localhost";
+    $usuarioLocal = "root";
+    $senhaLocal = "";
+    $bancoDeDadosLocal = "teste";
+
+    // Desativar exibição de erros
+    error_reporting(0);
+
+    // Tentar conexão com o banco de dados remoto
     $mysqli = @new mysqli($hostRemoto, $usuarioRemoto, $senhaRemoto, $bancoDeDadosRemoto);
+
+    if ($mysqli->connect_errno) {
+        // Tentar conexão com o banco de dados local
+        $mysqli = @new mysqli($hostLocal, $usuarioLocal, $senhaLocal, $bancoDeDadosLocal);
+
+        if ($mysqli->connect_errno) {
+            return false;
+        }
+    }
+
+    // Restaurar configuração de exibição de erros
+    error_reporting(E_ALL);
 
     return $mysqli;
 }
 
+
+
 function executarConsulta($sql, $campo) {
     // Conectar ao banco de dados
-    global $mysqli;
-
-    $mysqli = conectarBancoDeDados($mysqli);
+    $mysqli = conectarBancoDeDados();
 
     if (!$mysqli) {
         return false;
@@ -27,6 +51,7 @@ function executarConsulta($sql, $campo) {
 
     if (!$result) {
         echo "Erro na consulta: " . $mysqli->error;
+        $mysqli->close();
         return false;
     }
 
@@ -39,7 +64,6 @@ function executarConsulta($sql, $campo) {
 
     return false;
 }
-
 
 function executarConsultaMultipla($sql) {
     // Conectar ao banco de dados
@@ -67,4 +91,3 @@ if (!$result) {
     $result->free_result();
     return $rows;
 }
-?>

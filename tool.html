@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kodular API PHP JSON Demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 10px;
+		}
+		h1 {
+			text-align: center;
+		}
+		#links {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
+		button {
+			margin: 5px;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			try {
+				$.ajax({
+					url: "https://utoaqui.000webhostapp.com/tool.php",
+					method: "GET",
+					success: function(data) {
+						try {
+							$.each(data, function(index, link) {
+								$('#links').append('<button> ' + link.livro + ' ' + link.capitulo + '</button>');
+								$('#links button').on("click", function() {
+									window.open(link.links);
+								});
+							});
+						} catch (error) {
+							console.error("Error while processing data:", error);
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error("AJAX request failed:", status, error);
+					}
+				});
+			} catch (error) {
+				console.error("An unexpected error occurred:", error);
+			}
+		});
+	</script>
+</head>
+<body>
+	<h1>Leitura de hoje</h1>
+	<div id="links"></div>
+</body>
+</html>

@@ -99,7 +99,7 @@ li {
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
   -webkit-animation-duration: 30s;
-  animation-duration: 600s;
+  animation-duration: 360s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
